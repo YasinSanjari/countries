@@ -22,7 +22,10 @@ export default function Home() {
   const [regionFilter, setRegionFilter] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const { data, isError, isLoading, error } = useCountries(regionFilter, searchTerm);
+  const { data, isError, isLoading, error } = useCountries(
+    regionFilter,
+    searchTerm
+  );
   let countries = data;
 
   const router = useRouter();
@@ -37,12 +40,9 @@ export default function Home() {
 
   // console.log(JSON.stringify(error));
 
-  
-  
-//   if (isError && error.response?.status === 404) {
-//   return <p>کشوری با این نام پیدا نشد 😕</p>;
-// }
-
+  //   if (isError && error.response?.status === 404) {
+  //   return <p>کشوری با این نام پیدا نشد 😕</p>;
+  // }
 
   return (
     <main className="flex flex-col min-h-screen bg-white dark:bg-black font-sans w-full mx-auto items-center">
@@ -82,18 +82,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Country Cards */}
       {isLoading && <Loader className="animate-spin w-12 h-12 my-auto" />}
       {isError && error.response?.status === 404 && (
         <p className="w-full text-center h-full my-auto text-2xl">
           No country found.
         </p>
       )}
-            {isError && error.response?.status !== 404 && (
+      {isError && error.response?.status !== 404 && (
         <p className="w-full text-center h-full my-auto text-2xl">
           Something went wrong.
         </p>
       )}
+
+      {/* Country Cards */}
       <section className="md:grid md:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] flex flex-col items-center gap-6 px-4 md:px-16 pb-10 w-full">
         {countries?.map((country) => (
           <Card

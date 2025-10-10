@@ -11,20 +11,20 @@ const CountryDetailsPage = () => {
   const params = useParams<{ name: string }>();
   const { data: country, isLoading, isError } = useCountry(params.name);
 
-  
-  if (isError || !country) {
+  if (isLoading) {
     return (
-      <div className="w-full text-center h-screen flex items-center justify-center">
-        <p className="text-2xl dark:text-white text-black">
-          No country found.
-        </p>
+      <div className="w-full h-screen flex">
+        <Loader className="animate-spin w-12 h-12 my-auto mx-auto" />
       </div>
     );
   }
-  if (isLoading) {
-    return (<div className="w-full h-screen flex">
-      <Loader className="animate-spin w-12 h-12 my-auto mx-auto" />
-    </div>);
+
+  if (isError || !country) {
+    return (
+      <div className="w-full text-center h-screen flex items-center justify-center">
+        <p className="text-2xl dark:text-white text-black">No country found.</p>
+      </div>
+    );
   }
 
   return (
