@@ -1,10 +1,8 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Search, Loader } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toggle";
-import Image from "next/image";
 import { useCountries } from "@/hooks/use-countries";
 import {
   Select,
@@ -16,11 +14,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
+import CountryCard from "./_components/country-card";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [regionFilter, setRegionFilter] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const router = useRouter();
 
   const { data, isError, isLoading, error } = useCountries(
     regionFilter,
@@ -28,21 +29,13 @@ export default function Home() {
   );
   let countries = data;
 
-  const router = useRouter();
-
-  const handleClick = (name: string) => {
-    router.push(`/countries/${name.toLowerCase()}`);
-  };
-
   if (regionFilter && searchTerm) {
     countries = countries?.filter((country) => country.region === regionFilter);
   }
 
-  // console.log(JSON.stringify(error));
-
-  //   if (isError && error.response?.status === 404) {
-  //   return <p>کشوری با این نام پیدا نشد 😕</p>;
-  // }
+  const handleClick = (name: string) => {
+    router.push(`/countries/${name.toLowerCase()}`);
+  };
 
   return (
     <main className="flex flex-col min-h-screen bg-white dark:bg-black font-sans w-full mx-auto items-center">
@@ -97,29 +90,11 @@ export default function Home() {
       {/* Country Cards */}
       <section className="md:grid md:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] flex flex-col items-center gap-6 px-4 md:px-16 pb-10 w-full">
         {countries?.map((country) => (
-          <Card
+          <CountryCard
+            handleClick={handleClick}
+            country={country}
             key={country.name.common}
-            className="overflow-hidden rounded-2xl p-4 max-w-[350px] w-[300px] md:w-auto cursor-pointer hover:scale-[1.05] transition-transform justify-center bg-gray-100 dark:bg-[#171717]"
-            onClick={() => handleClick(country.name.common)}
-          >
-            <CardHeader className="relative aspect-square w-full">
-              <Image
-                src={country.flags.svg}
-                alt={country.name.common}
-                fill
-                className="object-contain object-center rounded-2xl scale-85"
-                sizes="(max-width: 768px) 100vw, 33vw"
-                priority={false}
-              />
-            </CardHeader>
-            <CardContent className="text-center text-2xl">
-              <p className="font-medium text-[#111518] dark:text-white">
-                {country.name.common}
-              </p>
-              <p className="text-[#949ba1] text-lg">{country.capital[0]}</p>
-              <p className="text-sm text-[#949ba1]">{country.region}</p>
-            </CardContent>
-          </Card>
+          ></CountryCard>
         ))}
       </section>
     </main>
