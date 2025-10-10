@@ -5,8 +5,8 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone <your-repo-url>
-cd <your-project-folder>
+git clone https://github.com/YasinSanjari/osify-ai-task.git
+cd osify-ai-task
 ```
 
 ### 2️⃣ Install dependencies
