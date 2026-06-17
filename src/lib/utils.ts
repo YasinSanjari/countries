@@ -7,6 +7,5 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const axiosInstance = axios.create({
-  baseURL:
-    "https://restcountries.com/v3.1/",
+  baseURL: "/api/countries",
 });

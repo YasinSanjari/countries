@@ -1,7 +1,8 @@
 export type Country = {
-  name: {
+  names: {
     common: string;
-    nativeName?: Record<
+
+    native?: Record<
       string,
       {
         official: string;
@@ -9,10 +10,33 @@ export type Country = {
       }
     >;
   };
-  capital: string[];
-  flags: { svg: string };
+
+  capitals?: {
+    name: string;
+  }[];
+
+  flag: {
+    url_svg: string;
+  };
+
   region: string;
+
   subregion?: string;
+
   population?: number;
-  cca3?: string;
+
+  codes?: {
+    alpha_2?: string;
+    alpha_3?: string;
+  };
+};
+
+export type CountriesResponse = {
+  data: {
+    objects: Country[];
+    meta: {
+      total: number;
+      request_id: string;
+    };
+  };
 };

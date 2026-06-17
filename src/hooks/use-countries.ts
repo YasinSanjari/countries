@@ -4,22 +4,23 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
 export const useCountries = (regionFilter: string, searchTerm: string) => {
-  let endpoint = "";
-  if (regionFilter && searchTerm) {
-    endpoint = `name/${searchTerm}?fields=name,capital,flags,region`;
-  } else if (regionFilter) {
-    endpoint = `region/${regionFilter}?fields=name,capital,flags,region`;
-  } else if (searchTerm) {
-    endpoint = `name/${searchTerm}?fields=name,capital,flags,region`;
-  } else {
-    endpoint = "all?fields=name,capital,flags,region";
-  }
+  const fields = "names.common,capitals,codes.alpha_2,region";
+
   return useQuery<Country[], AxiosError>({
-    queryKey: ["countries", endpoint],
-    queryFn: () =>
-      axiosInstance
-        .get<Country[]>(endpoint || "all?fields=name,capital,flags,region")
-        .then((res) => res.data),
-    retry:false,
+    queryKey: ["countries", regionFilter, searchTerm],
+
+    queryFn: async () => {
+      const res = await axiosInstance.get("", {
+        params: {
+          region: regionFilter || undefined,
+          search: searchTerm || undefined,
+          fields,
+        },
+      });
+
+      return res.data.data?.objects ?? [];
+    },
+
+    retry: false,
   });
 };

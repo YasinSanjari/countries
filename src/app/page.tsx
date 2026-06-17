@@ -25,8 +25,9 @@ export default function Home() {
 
   const { data, isError, isLoading, error } = useCountries(
     regionFilter,
-    searchTerm
+    searchTerm,
   );
+
   let countries = data;
 
   if (regionFilter && searchTerm) {
@@ -46,13 +47,16 @@ export default function Home() {
             className="absolute left-3 top-2.5 text-gray-500 dark:text-gray-800"
             size={18}
           />
+
           <Input
             placeholder="Search for a country..."
             className="pl-10 bg-gray-100 dark:text-white border-none"
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+
           <ModeToggle />
         </div>
+
         <div className="w-48">
           <Select
             onValueChange={(value) => setRegionFilter(value)}
@@ -61,9 +65,11 @@ export default function Home() {
             <SelectTrigger>
               <SelectValue placeholder="Filter by Region" />
             </SelectTrigger>
+
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Regions</SelectLabel>
+
                 <SelectItem value="Africa">Africa</SelectItem>
                 <SelectItem value="Americas">Americas</SelectItem>
                 <SelectItem value="Asia">Asia</SelectItem>
@@ -76,11 +82,13 @@ export default function Home() {
       </section>
 
       {isLoading && <Loader className="animate-spin w-12 h-12 my-auto" />}
+
       {isError && error.response?.status === 404 && (
         <p className="w-full text-center h-full my-auto text-2xl">
           No country found.
         </p>
       )}
+
       {isError && error.response?.status !== 404 && (
         <p className="w-full text-center h-full my-auto text-2xl">
           Something went wrong.
@@ -93,8 +101,8 @@ export default function Home() {
           <CountryCard
             handleClick={handleClick}
             country={country}
-            key={country.name.common}
-          ></CountryCard>
+            key={country.names.common}
+          />
         ))}
       </section>
     </main>
